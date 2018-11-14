@@ -5,7 +5,7 @@ import network.ReLU;
 public class CNNReLU extends ReLU implements Filter {
 
 	private static final long serialVersionUID = -1777835782819406932L;
-	private double[][][][] rx; //用于反向求导
+	private transient double[][][][] rx; //用于反向求导
 
 	@Override
 	public double[][][][] forward(double[][][][] x) {

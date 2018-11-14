@@ -8,4 +8,6 @@ package network;
 public interface Trainee{
 	public  void numricGradient();
 	public  void update();
+	public void load(String path);
+	public void save(String path);
 }

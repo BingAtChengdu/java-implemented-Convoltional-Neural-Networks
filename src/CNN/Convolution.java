@@ -20,11 +20,13 @@ import network.Trainee;
 public class Convolution implements Filter, Trainee {
 
 	private int stride = 1, padding = 0;
-	private double[][][][] filter, dfilter;
-	private double[] b, db;
-	private double std;
+	private double[][][][] filter;
+	private transient double[][][][] dfilter;
+	private double[] b;
+	private transient double[] db;
+	private transient double std;
 
-	private double[][] flatX, flatW, transposedW, dTransposedW, dw;
+	private transient double[][] flatX, flatW, transposedW, dTransposedW, dw;
 
 	private int h, w, fn, channel, height, width, oh, ow;
 
@@ -181,5 +183,17 @@ public class Convolution implements Filter, Trainee {
 	@Override
 	public void update() {
 		WeightUpdator.update(filter, b, dfilter, db);
+	}
+
+	@Override
+	public void load(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save(String path) {
+		// TODO Auto-generated method stub
+		
 	}
 }

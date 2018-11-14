@@ -30,10 +30,13 @@ public class Network implements Serializable {
 	private boolean isTraining = false;
 
 	private int c, height, width;
+	
+	private String name ;
 
-	public Network() {
+	public Network(String name) {
 		cnnLayers = new ArrayList<Filter>();
 		denseLayers = new ArrayList<Transformer>();
+		this.name = name;
 	}
 
 	public void setParam(double[][][][] x, double[][] t) {
@@ -186,5 +189,9 @@ public class Network implements Serializable {
 
 	public double[][] getT() {
 		return t;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

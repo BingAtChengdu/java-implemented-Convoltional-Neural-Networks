@@ -105,9 +105,9 @@ public class MnistDataReader  {
     	
     	for(int n = 0; n < x_batch.length; n ++)
     		for(int c = 0; c < x_batch[0].length; c ++) {
-    			int num = (int) Math.abs((r.nextInt(60000)));
+    			int num = (int) Math.abs((r.nextInt(m.length - 1)));
 
-    			while (al.contains(num) || num > 60000 || num < 0) {
+    			while (al.contains(num) || num > m.length - 1 || num < 0) {
     				num = r.nextInt();
     			}
     			   			

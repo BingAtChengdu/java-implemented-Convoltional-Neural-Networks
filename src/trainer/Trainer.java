@@ -1,5 +1,9 @@
 package trainer;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,6 +11,11 @@ import java.util.Random;
 
 import network.Network;
 
+/**
+ * ÓÃÓÚÑµÁ·ÍøÂç
+ * @author hubing
+ *
+ */
 public class Trainer {
 
 	private ArrayList<Double> trainLossList, trainAccList, testAccList;
@@ -47,7 +56,7 @@ public class Trainer {
 
 			double loss = network.loss();
 			
-			System.out.println("loss: " + String.valueOf(loss));
+			System.out.println("i: " + i + " loss: " + String.valueOf(loss));
 			
 			trainLossList.add(loss);
 			network.gradient();
@@ -66,6 +75,12 @@ public class Trainer {
 		printOut();
 	}
 
+	public void save(String path) throws FileNotFoundException, IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path+network.getName()));
+		oos.writeObject(network);
+		oos.close();
+		
+	}
 	private void getBatch(double[][][][] x_batch, double[][] t_batch) {
 		Random random = new Random();
 		for (int i = 0; i < batchSize; i++) {

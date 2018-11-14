@@ -9,14 +9,13 @@ import pojo.DenseSetting;
 public class NetworkFactory {
 
 	private NetworkFactory() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public static Network sequentialNetwork(CNNSetting cnnSetting, DenseSetting denseSetting) {
+	public static Network sequentialNetwork(String name,CNNSetting cnnSetting, DenseSetting denseSetting) {
 
 		double b = 0;
 
-		Network network = new Network();
+		Network network = new Network(name);
 
 		/**
 		 * ¾í»ý²ã
@@ -124,8 +123,4 @@ public class NetworkFactory {
 
 		return network;
 	}
-	
-
-
-
 }
