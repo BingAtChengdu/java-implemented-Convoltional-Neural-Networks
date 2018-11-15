@@ -37,6 +37,9 @@ The jar file is under foler ForTest.
 4. edit the startup.properties file to modify the relative path.
 5. the startup.properties file must be in the same folder as ai.jar 
 
+the trained network will be saved to the path set by trainSavePath parameter.
+the you can run a network by name under trainSavePath.
+
 ## startup.properties:edit this file to modify parameters 
 ### 通道
 channel = 1
