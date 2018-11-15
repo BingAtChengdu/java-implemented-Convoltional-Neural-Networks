@@ -33,14 +33,16 @@ public class Startup {
 	double[][] t_test;
 
 	private String trainImgPath, trainLabelPath, testImgPath, testLabelPath, trainSavePath;
-	
+
 	private Network network;
 	private static Scanner sc;
+	
+	MnistDataReader trainMatrix,testMatrix;
 
 	/**
 	 * 启动网络
 	 * 
-	 * @param args[0] = train 训练 args[0] = run 识别 args[1] 网络名称 
+	 * @param args[0] = train 训练 args[0] = run 识别 args[1] 网络名称
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
@@ -56,39 +58,46 @@ public class Startup {
 		String properties = "/startup.properties"; // 训练参数文件
 		startup.parseParam(properties);
 		startup.parseDataset();
-		
+
 		if ("train".equals(mode)) {// 训练模式
 			startup.network = NetworkFactory.sequentialNetwork(networkName, startup.cnnSettings, startup.d);
 
 			Trainer trainer = new Trainer(startup.network, startup.batchSize, startup.iteNum, startup.lr);
 			trainer.train(startup.x_train, startup.t_train, startup.x_test, startup.t_test);
 			trainer.save(startup.trainSavePath);
-			
+
 		} else if ("run".equals(mode)) {
-						startup.network = startup.loadNetwork(networkName);
-			
+			startup.network = startup.loadNetwork(networkName);
+
 			sc = new Scanner(System.in);
-	        
-			System.out.println("请输入想识别的图片编号：");
-			double[][][][] x = new double[1][startup.x_test[0].length][startup.x_test[0][0].length][startup.x_test[0][0][0].length];
-			double[][] t = new double[1][startup.t_test[0].length];
+
+			NumberFormat nf = NumberFormat.getPercentInstance();
 			
-	        while (sc.hasNext()) {
-	            //利用nextXXX()方法输出内容
-	            String str = sc.next();
-	            int num = Integer.parseInt(str);
-	            
-	            startup.getOne(x,t,num);
-	            
-	            startup.network.setParam(x, t);
-	            
-	            double accuracy = startup.network.accuracy();
-	            
-	            System.out.println("识别精度： " + String.valueOf(accuracy));
-	            
-	        }
-			startup.network.predict();
-			
+			System.out.println("请输入想识别的图片个数：");
+
+
+			while (sc.hasNext()) {
+				// 利用nextXXX()方法输出内容
+				String str = sc.next();
+				int num = Integer.parseInt(str);
+				
+				if(num <= 0) {
+					System.out.println("编号不能小于等于0：");
+				}
+
+				double[][][][] x = new double[num][startup.x_test[0].length][startup.x_test[0][0].length][startup.x_test[0][0][0].length];
+				double[][] t = new double[num][startup.t_test[0].length];
+				
+				startup.getOne(x, t);
+
+				startup.network.setParam(x, t);
+				
+				double[][] y = startup.network.predict();
+
+				double accuracy = startup.network.accuracy();
+				System.out.println("识别精度： " + nf.format(accuracy));
+			}
+
 		} else {
 			throw new RuntimeException("参数错误！");
 		}
@@ -143,11 +152,8 @@ public class Startup {
 
 	private void parseDataset() throws IOException {
 
-		MnistDataReader trainMatrix = new MnistDataReader(trainImgPath, trainLabelPath);
-		MnistDataReader testMatrix = new MnistDataReader(testImgPath, testLabelPath);
-
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		nf.setMinimumFractionDigits(2);
+		trainMatrix = new MnistDataReader(trainImgPath, trainLabelPath);
+		testMatrix = new MnistDataReader(testImgPath, testLabelPath);
 
 		x_train = new double[trainSize][1][28][28];
 		t_train = new double[trainSize][10];
@@ -158,34 +164,32 @@ public class Startup {
 		trainMatrix.randomSelect(x_train, t_train);
 		testMatrix.randomSelect(x_test, t_test);
 	}
-	
+
 	/**
 	 * 加载网络
+	 * 
 	 * @param name
 	 * @return
 	 */
-	private Network loadNetwork(String name)  {
-		
+	private Network loadNetwork(String name) {
+
 		ObjectInputStream ois;
 		Network network;
 		try {
 			ois = new ObjectInputStream(new FileInputStream(trainSavePath + name));
 			network = (Network) ois.readObject();
-			ois.close();			
+			ois.close();
 			return network;
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			throw new RuntimeException("卷积神经网络加载错误");
-		}	
+		}
 
 	}
-	
-	private void getOne(double[][][][] x, double[][] t,int num) {
-		for(int c = 0; c < x_test[0].length; c ++)
-			for(int i = 0; i < x_test[0][0].length; i ++) {
-				System.arraycopy(x_test[num][c][i], 0, x[0][c][i], 0, x[0][0][0].length);
-			}
-		t[0] = t_test[num];
+
+	private void getOne(double[][][][] x ,double[][] t) throws IOException {		
+		testMatrix.randomSelect(x, t);
 	}
 
 }

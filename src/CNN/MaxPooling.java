@@ -5,6 +5,11 @@ import math.MatrixTransformer;
 
 public class MaxPooling implements Filter {
 
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = -2145643160514653272L;
+
 	private int height, width, pad, stride;
 
 	private int N, C, H, W; // 输入数据形状，用于反向求导

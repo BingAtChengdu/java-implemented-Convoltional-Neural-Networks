@@ -61,9 +61,9 @@ class testIntegration {
 
 		// ´´½¨ÍøÂç
 		
-		Network network = NetworkFactory.sequentialNetwork(cnnSettings, d);
+		Network network = NetworkFactory.sequentialNetwork("BingNet",cnnSettings, d);
 		
-		Trainer trainer = new Trainer(network,100,2000,0.1d);
+		Trainer trainer = new Trainer(network,100,1500,0.1d);
 		trainer.train(x_train, t_train, x_test, t_test);
 		return;
 

@@ -19,6 +19,10 @@ import network.Trainee;
  */
 public class Convolution implements Filter, Trainee {
 
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 4128769310096287439L;
 	private int stride = 1, padding = 0;
 	private double[][][][] filter;
 	private transient double[][][][] dfilter;
