@@ -22,11 +22,20 @@ works.
 Momentoum, Adam update will be implemented later.
 
 # How to use:
-1. install JDK 8
+## compile from source
+1. install JDK 8 or higher
 2. compile the source
 3. set parameters in startup.properties
 4. run a network : java run networkname
 5. train a network: java train networkname
+
+## run ai.jar
+The jar file is under foler ForTest.
+1. install jDK8 or higher
+2. download runable jar under ForTest folder
+3. all necessary resource is under ForTest folder
+4. edit the startup.properties file to modify the relative path.
+5. the startup.properties file must be in the same folder as ai.jar 
 
 # startup.properties:edit this file to modify parameters 
 ## 通道
